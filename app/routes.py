@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, flash
 from app import app, db
 from app.forms import TimeForm, JogadorForm, TreinadorForm, CompeticaoForm, JogoForm
 from app.controllers import CompeticaoController, TreinadorController, TimeController, JogadorController, JogoController
+from app.controllers import ClassificacaoController
 
 
 @app.route('/')
@@ -238,3 +239,8 @@ def jogos_delete(id):
     else:
         flash('Erro ao excluir jogo.', 'danger')
     return redirect(url_for('jogos_index'))
+
+@app.route('/classificacao')
+def classificacao_index():
+    classificacao = ClassificacaoController.calcular_classificacao()
+    return render_template('classificacao/index.html', classificacao=classificacao)
