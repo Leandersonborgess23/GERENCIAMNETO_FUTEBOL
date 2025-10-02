@@ -267,4 +267,22 @@ def cadastro_index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    return login()
+    formulario = LoginForm()
+    if formulario.validate_on_submit():
+        sucesso = AuthenticationController.login(formulario)
+        if sucesso:
+            flash("Login realizado com sucesso!", category='success')
+            return redirect(url_for('index'))
+        else:
+            flash("Erro ao fazer o login. Verifique novamente seus dados.", category='error')
+            return render_template("usuarios/login.html", form = formulario)
+    return render_template("usuarios/login.html", form = formulario)
+
+@app.route('/logout')
+def logout():
+    successo = AuthenticationController.logout()
+    if not successo:
+        flash("Erro ao realizar logout.", "error")
+    else:
+        flash("Logout realizado com sucesso!", "success")
+    return redirect(url_for("login"))

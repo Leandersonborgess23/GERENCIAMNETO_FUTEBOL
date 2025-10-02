@@ -1,5 +1,5 @@
 from flask import render_template, flash
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from werkzeug.security import check_password_hash
 from app.models.usuario import Usuario
 
@@ -16,3 +16,7 @@ class AuthenticationController:
                 return True
         else:
             return False
+
+    def logout():
+        logout_user()
+        return True
