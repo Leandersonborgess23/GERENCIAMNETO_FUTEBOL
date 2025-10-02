@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, request
 from app import app, db
 from app.forms import TimeForm, JogadorForm, TreinadorForm, CompeticaoForm, JogoForm
 from app.controllers import CompeticaoController, TreinadorController, TimeController, JogadorController, JogoController
@@ -8,6 +8,7 @@ from app.forms.usuario_form import UsuarioForm
 from app.controllers import UsuarioController
 from app.models import Usuario
 from app.controllers import AuthenticationController
+from flask_login import login_required
 
 
 
@@ -266,13 +267,18 @@ def cadastro_index():
     return render_template("usuarios/cadastro.html", form = formulario)
 
 @app.route("/login", methods=["GET", "POST"])
+@login_required
 def login():
     formulario = LoginForm()
     if formulario.validate_on_submit():
         sucesso = AuthenticationController.login(formulario)
         if sucesso:
             flash("Login realizado com sucesso!", category='success')
-            return redirect(url_for('index'))
+            next_page = request.args.get('next')
+            if not next_page:
+                next_page = url_for('index')
+                return redirect(next_page)
+            """return redirect(url_for('index'))"""
         else:
             flash("Erro ao fazer o login. Verifique novamente seus dados.", category='error')
             return render_template("usuarios/login.html", form = formulario)
