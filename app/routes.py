@@ -267,7 +267,6 @@ def cadastro_index():
     return render_template("usuarios/cadastro.html", form = formulario)
 
 @app.route("/login", methods=["GET", "POST"])
-@login_required
 def login():
     formulario = LoginForm()
     if formulario.validate_on_submit():
