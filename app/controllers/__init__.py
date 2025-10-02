@@ -4,3 +4,5 @@ from .time_controller import TimeController
 from .jogador_controller import JogadorController
 from .jogo_controller import JogoController
 from .classificacao_controller import ClassificacaoController
+from .usuario_controller import UsuarioController
+from .authentication_controller import AuthenticationController

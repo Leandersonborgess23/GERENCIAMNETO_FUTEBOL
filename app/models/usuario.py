@@ -9,4 +9,3 @@ class Usuario(db.Model, UserMixin):  #define a classe Usuario, que herda de db.M
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)  #define a coluna username como string (até 64 caracteres), índice para aprimorar as buscas e com valor único no banco
     email: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)  #igual ao campo anterior, mas para o email do usuário
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))  #senha codificada (hash) do usuário como string (até 256 caracteres), pode ser nula
-    posts: so.Mapped['Post']=so.relationship(back_populates='author')

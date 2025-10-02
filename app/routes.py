@@ -3,6 +3,12 @@ from app import app, db
 from app.forms import TimeForm, JogadorForm, TreinadorForm, CompeticaoForm, JogoForm
 from app.controllers import CompeticaoController, TreinadorController, TimeController, JogadorController, JogoController
 from app.controllers import ClassificacaoController
+from app.forms.login_form import LoginForm
+from app.forms.usuario_form import UsuarioForm
+from app.controllers import UsuarioController
+from app.models import Usuario
+from app.controllers import AuthenticationController
+
 
 
 @app.route('/')
@@ -244,3 +250,21 @@ def jogos_delete(id):
 def classificacao_index():
     classificacao = ClassificacaoController.calcular_classificacao()
     return render_template('classificacao/index.html', classificacao=classificacao)
+
+@app.route('/cadastrar', methods=['GET', 'POST'])
+def cadastro_index():
+    formulario = UsuarioForm()
+    if formulario.validate_on_submit():
+        sucesso = UsuarioController.salvar(formulario)
+        if sucesso:
+            flash("Usuário cadastrado com sucesso!", category='success')
+            return redirect(url_for('login'))
+            """return render_template('index.html')"""
+        else:
+            flash("Erro ao cadastrar o novo usuário.", category='error')
+            return render_template("usuarios/cadastro.html", form = formulario)
+    return render_template("usuarios/cadastro.html", form = formulario)
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    return login()
